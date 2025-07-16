@@ -1,0 +1,72 @@
+bool isSafe(int row,int col,vector<string>&board,int n)
+    {
+        int drow = row;
+        int dcol = col;
+        while(row >= 0 && col >= 0)
+        {
+            if(board[row][col] == 'Q')
+            {
+                return false;
+            }
+            row--;
+            col--;
+        }
+        row = drow;
+        col = dcol;
+        while(col >= 0)
+        {
+            if(board[row][col] == 'Q')
+            {
+                return false;                
+            }
+            col--;
+        }
+
+        row = drow;
+        col = dcol;
+
+        while(row < n && col >= 0)
+        {
+            if(board[row][col] == 'Q')
+            {
+                return false;
+            }
+            row++;
+            col--;
+        }
+
+
+        return true;
+    }
+    void chessSolve(int col,vector<vector<string>>&res,string rw,vector<string>&board,int n)
+    {
+         if(col == n)
+         {
+            res.push_back(board);
+            return;
+         }
+
+         for(int row = 0 ; row < n ; row++)
+         {
+            if(isSafe(row,col,board,n))
+            {
+                board[row][col] = 'Q';
+                chessSolve(col+1,res,rw,board,n);
+                board[row][col] = '.';//backtrack
+            }
+         }
+    }
+
+    vector<vector<string>> solveNQueens(int n)
+    {
+        vector<vector<string>>res;
+        vector<string>board(n);
+        string rw(n,'.');
+        for(int i = 0 ; i < n ; i++)
+        {
+            board[i] = rw;
+        }
+        chessSolve(0,res,rw,board,n);
+
+        return res;
+    }
