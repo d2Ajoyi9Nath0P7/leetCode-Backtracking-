@@ -1,0 +1,42 @@
+void comSum(int index,int target,vector<int>&vec,int n,vector<vector<int>>&res,vector<int>&temp,bool takePre)
+    {
+        if(target == 0)
+        {
+            res.push_back(temp);
+            return;
+        }
+        if(index == n || target < 0)
+        {
+            return;
+        }
+
+        if(vec[index] > target)
+        {
+            return;
+        }
+
+        comSum(index+1,target,vec,n,res,temp,false);//not take
+
+        if(index > 0 && vec[index] == vec[index-1] && !takePre)
+        {
+            return;
+        }
+
+        if(target >= vec[index])
+        {
+            temp.push_back(vec[index]);
+            comSum(index+1,target-vec[index],vec,n,res,temp,true);
+            temp.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) 
+    {
+        bool takePre = false;
+        int n = candidates.size();
+        vector<int>temp;
+         vector<vector<int>>res;
+         sort(candidates.begin(),candidates.end());
+         comSum(0,target,candidates,n,res,temp,false);
+         return res;
+    }
