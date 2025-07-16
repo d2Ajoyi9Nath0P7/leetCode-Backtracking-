@@ -1,0 +1,26 @@
+void solve(int k,int index,int target,vector<int>&temp,vector<vector<int>>&res)
+    {
+        if(temp.size() == k && target == 0)
+        {
+            res.push_back(temp);
+            return;
+        }
+        for(int i = index ; i <= 9 ; i++)
+        {
+            if(i > target)
+            {
+                break;
+            }
+            temp.push_back(i);
+            solve(k,i+1,target-i,temp,res);
+            temp.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum3(int k, int n) 
+    {
+        vector<vector<int>>res;
+        vector<int>temp;
+        solve(k,1,n,temp,res);
+        return res;
+    }
