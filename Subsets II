@@ -1,0 +1,22 @@
+void solve(vector<int>&nums,int index,vector<int>&temp,set<vector<int>>&resSet)
+{
+    if(index == nums.size())
+    {
+        resSet.insert(temp);
+        return;
+    }
+    solve(nums,index+1,temp,resSet);
+    temp.push_back(nums[index]);
+    solve(nums,index+1,temp,resSet);
+    temp.pop_back();
+}
+
+vector<vector<int>> subsetsWithDup(vector<int>& nums)
+{
+    vector<int>temp;
+    set<vector<int>>resSet;
+    sort(nums.begin(),nums.end());
+    solve(nums,0,temp,resSet);
+    vector<vector<int>>res(resSet.begin(),resSet.end());
+    return res;
+}
