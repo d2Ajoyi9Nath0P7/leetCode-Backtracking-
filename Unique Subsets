@@ -1,0 +1,43 @@
+Problem link : https://www.geeksforgeeks.org/problems/subsets-1587115621/1?page=1&category=Backtracking&sortBy=submissions
+From         : GFG
+
+
+void solve(int i,vector<int>&arr,int n,vector<int>&temp,set<vector<int>>&st)
+{
+    if(i == arr.size())
+    {
+        st.insert(temp);
+        return;
+    }
+
+    solve(i+1,arr,n,temp,st);
+
+    temp.push_back(arr[i]);
+
+    solve(i+1,arr,n,temp,st);
+    temp.pop_back();
+}
+
+//Function to find all possible unique subsets.
+vector<vector<int> > AllSubsets(vector<int> arr, int n)
+{
+    vector<int>temp;
+    set<vector<int>>st;
+
+    sort(arr.begin(),arr.end());
+
+    solve(0,arr,n,temp,st);
+
+    vector<vector<int>>res(st.begin(),st.end());
+
+    /*for(auto i : res)
+    {
+        for(auto j : i)
+        {
+            cout<<j<<" ";
+        }
+        cout<<"\n";
+    }*/
+
+    return res;
+}
