@@ -1,0 +1,51 @@
+problem link : https://www.geeksforgeeks.org/problems/m-coloring-problem-1587115620/1?page=1&category=Backtracking&sortBy=submissions
+From         : GFG
+
+bool isSafe(int node,int col,vector<vector<int>>&edgeMat,vector<int>&color,int m,int V)
+{
+    for(int i = 0; i < V ; i++)
+    {
+        if(edgeMat[node][i] == 1 && col == color[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool colorGraph(int node,int V,vector<vector<int>>&edgeMat,vector<int>&color,int m)
+{
+    if(node == V)
+    {
+        return true;
+    }
+    for(int col = 1 ; col <= m ; col++)
+    {
+        if(isSafe(node,col,edgeMat,color,m,V))//(0,1) (1,2) (2,2)
+        {
+            color[node] = col;//
+
+            if(colorGraph(node+1,V,edgeMat,color,m))//
+            {
+                return true;
+            }
+            color[node] = 0;//backtraking
+        }
+    }
+    return false;
+}
+
+bool graphColoring(int v, vector<vector<int>> &edges, int m)
+{
+    vector<int>color(v,-1);
+    vector<vector<int>> edgeMat(v, vector<int>(v, 0));
+    for(auto it : edges)
+    {
+        int u = it[0];
+        int v = it[1];
+        edgeMat[u][v] = 1;
+        edgeMat[v][u] = 1;
+    }
+
+    return colorGraph(0,v,edgeMat,color,m);
+}
