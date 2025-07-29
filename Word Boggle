@@ -1,0 +1,78 @@
+problem  : https://www.geeksforgeeks.org/problems/word-boggle4143/1?page=1&category=Backtracking&sortBy=submissions
+Fromt    : GFG
+
+
+int dx[8] = {-1, -1, -1,  0, 0, 1, 1, 1};
+int dy[8] = {-1,  0,  1, -1, 1, -1, 0, 1};
+
+bool isValid(int i,int j,vector<vector<int>>&vis,vector<vector<char>>&board)
+{
+    if((i >= 0 && i < board.size()) && (j >= 0 && j < board[0].size()) && vis[i][j] == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool dfs(int x,int y,vector<vector<int>>&vis,int index,string& temp,vector<vector<char>>&board)
+{
+    if(index == temp.size()-1)
+    {
+        return true;
+    }
+    vis[x][y] = 1;
+    for(int i = 0 ; i < 8 ; i++)
+    {
+        int newX = x + dx[i];
+        int newY = y + dy[i];
+
+        if(isValid(newX,newY,vis,board) && (board[newX][newY] == temp[index+1]))//problem
+        {
+            if(dfs(newX,newY,vis,index+1,temp,board))//(8^temp_length)
+            {
+                return true;
+            }
+        }
+    }
+    vis[x][y] = 0;//backtracking korchi..
+    return false;
+}
+
+bool isExist(string& temp,vector<vector<char>>&board,vector<string>&dictionary)
+{
+    char firstCharacter = temp[0];
+    int row = board.size();
+    int col = board[0].size();
+    int index = 0;
+
+    vector<vector<int>>vis(row,vector<int>(col,0));
+
+    for(int i = 0 ; i < board.size() ; i++) //o (n * m)
+    {
+        for(int j = 0 ; j < board[0].size() ; j++)
+        {
+            if(firstCharacter == board[i][j])
+            {
+                if(dfs(i,j,vis,index,temp,board))//(8^temp_length)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+vector<string> wordBoggle(vector<vector<char> >& board,vector<string>& dictionary)
+{
+    vector<string>res;
+    for(int i = 0; i < dictionary.size() ; i++)//N * R * C * 8^L
+    {
+        string temp = dictionary[i];
+        if(isExist(temp,board,dictionary))// R * C * 8^L
+        {
+            res.push_back(temp);
+        }
+    }
+    return res;
+}
