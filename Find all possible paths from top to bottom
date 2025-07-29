@@ -1,0 +1,32 @@
+Problem link : https://www.geeksforgeeks.org/problems/find-all-possible-paths-from-top-to-bottom/1?page=2&category=Backtracking&sortBy=submissions
+From         : GFG
+
+
+vector<vector<int>> outer;
+vector<int> inner;
+
+void solve(int i, int j, int n, int m, vector<vector<int>>& grid)
+{
+    if(i == n || j == m)
+    {
+        return;
+    }
+    inner.push_back(grid[i][j]);
+
+    if(i == n - 1 && j == m - 1)
+    {
+        outer.push_back(inner);
+    }
+
+
+    solve(i+1, j, n, m, grid);
+    solve(i, j+1, n, m, grid);
+
+    inner.pop_back();
+}
+
+vector<vector<int>> findAllPossiblePaths(int n, int m, vector<vector<int>>& grid)
+{
+    solve(0, 0, n, m, grid);
+    return outer;
+}
